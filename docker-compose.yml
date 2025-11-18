@@ -11,5 +11,16 @@ services:
     - "5432:5432"
     volumes: 
       - db:/var/lib/postgresql
+  node_api_instance_1:
+    container_name: node_api_instance_1
+    build: ./nodejs_api
+    environment:
+      PORT: ${PORT}
+      DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - db
+
 volumes:
   db:

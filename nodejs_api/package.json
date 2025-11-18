@@ -4,8 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "tsx ./src/server.ts",
+    "dev": "npx nodemon ./src/server.ts",
+    "start": "tsx ./src/server.ts",
     "drizzle:push": "drizzle-kit push",
+    "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,6 +19,8 @@
     "@types/express": "^5.0.5",
     "@types/pg": "^8.15.6",
     "drizzle-kit": "^0.31.6",
+    "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   },
