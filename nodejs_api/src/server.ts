@@ -1,8 +1,8 @@
 import app from "./app";
 import dotenv from 'dotenv';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import Utils from "./utils";
 dotenv.config({quiet: true});
-
 
 /*
 
@@ -15,11 +15,10 @@ Without a container:
 */
 
 
-const LOCAL_DB_URL = "postgresql://postgres:123456789@localhost:5432/ubqtdatabase";
 
 const PORT = Number(process.env.PORT ?? 3000);
 
-export const db = drizzle(process.env.DATABASE_URL ?? LOCAL_DB_URL);
+export const db = drizzle(Utils.getDbUrl());
 
 app.listen(PORT, (error) => {
     console.log(`Server running on port ${PORT}`);

@@ -1,8 +1,8 @@
-import { compare, genSalt, hash } from "bcryptjs";
+import { genSalt, hash } from "bcryptjs";
 import { db } from "./server";
-import { count, eq } from "drizzle-orm";
 import { users } from "./db/schema";
 import { User } from "./user";
+import 'dotenv/config';
 
 class Utils {
     static verifyEmail(email: string): boolean {
@@ -53,6 +53,15 @@ class Utils {
             user: user,
         });
     }   
+
+    static getDbUrl(): string {
+        const PORT = process.env.DB_PORT ?? "3000";
+        const HOST = process.env.DB_HOST ?? "localhost";
+        const USER = process.env.DB_USER ?? "postgres";
+        const PASSWORD = process.env.DB_PASSWORD ?? "123456789";
+        const DB = process.env.DB_NAME ?? "ubqtdatabase";
+        return `postgresql://${USER}:${PASSWORD}@${HOST}:${PORT}/${DB}`;
+    }
 }
 
 export default Utils;

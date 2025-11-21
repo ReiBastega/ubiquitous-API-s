@@ -11,25 +11,42 @@ services:
     - "5432:5432"
     volumes: 
       - db:/var/lib/postgresql
-  node_api:
-    container_name: node_api
+  node_api_1:
+    container_name: node_api_1
     build: ./nodejs_api
     environment:
-      PORT: ${PORT}
-      DATABASE_URL: ${DATABASE_URL}
+      PORT: ${API_INSTANCE_1_PORT}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
     ports:
-        - ${PORT}:${PORT}
+      - ${API_INSTANCE_1_PORT}:${API_INSTANCE_1_PORT}
     depends_on:
-        - db
-  python_api:
+      - db
+  go_api_1:
+    container_name: go_api_1
+    build: ./go_api
+    environment:
+      PORT: ${API_INSTANCE_2_PORT}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
+    ports:
+      - ${API_INSTANCE_2_PORT}:${API_INSTANCE_2_PORT}
+    depends_on:
+      - db
+  python_api_1:
     build: ./python_api
-    container_name: python_api
+    container_name: python_api_1
     environment:
       DATABASE_URL: postgresql+psycopg2://postgres:123456789@db:5432/ubqtdatabase
     ports:
-      - "3002:3002"
+      - "${API_INSTANCE_3_PORT}:${API_INSTANCE_3_PORT}"
     depends_on:
       - db
-
 volumes:
   db:
