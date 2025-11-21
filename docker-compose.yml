@@ -22,7 +22,7 @@ services:
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
     ports:
-      - ${API_INSTANCE_1_PORT}:${API_INSTANCE_1_PORT}
+      - "${API_INSTANCE_1_PORT}:8000"
     depends_on:
       - db
   go_api_1:
@@ -36,7 +36,7 @@ services:
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
     ports:
-      - ${API_INSTANCE_2_PORT}:${API_INSTANCE_2_PORT}
+      - "${API_INSTANCE_2_PORT}:8000"
     depends_on:
       - db
   python_api_1:
@@ -45,8 +45,18 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg2://postgres:123456789@db:5432/ubqtdatabase
     ports:
-      - "${API_INSTANCE_3_PORT}:${API_INSTANCE_3_PORT}"
+      - "${API_INSTANCE_3_PORT}:8000"
     depends_on:
       - db
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - node_api_1
+      - go_api_1
+      - python_api_1
 volumes:
   db:
