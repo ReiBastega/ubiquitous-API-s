@@ -1,23 +1,23 @@
-package getuserscontroller
+package controller
 
 import (
-	"go_api/model"
+	getusersusecase "go_api/usecase"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type getUsersController struct {
-	// usecase
+	usecase getusersusecase.GetUsersUsecase
 }
 
-func GetGetUserControllerInstance() getUsersController {
-	return getUsersController{}
-}
-
-func (g *getUsersController) GetUsersController(ctx *gin.Context) {
-	mock := []model.User{
-		{Id: 1, Name: "lucas", Email: "lucas@gmail.com", User: "lucas", Password: "password123"},
+func NewGetUserControllerInstance(usecase getusersusecase.GetUsersUsecase) getUsersController {
+	return getUsersController{
+		usecase: usecase,
 	}
-	ctx.JSON(http.StatusOK, mock)
+}
+
+func (g *getUsersController) Call(ctx *gin.Context) {
+	value := g.usecase.Call()
+	ctx.JSON(http.StatusOK, value)
 }
